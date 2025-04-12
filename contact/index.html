@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
+    <link rel = "stylesheet" href = "../style.css">
 </head>
 <body>
-    <h1>Contact</h1>
     <nav>
-        <ul class="nav_menu">
-            <li><a href = '../index.html'>Home</a></li>
-            <li><a href = '../projects/index.html'>Projects</a></li>
-            <li><a href = 'index.html'>Contact</a></li>
-            <li><a href = "https://github.com/Jimxthy" target="_blank">Github</a></li>
-            <li><a href="../resume/index.html">Resume</a></li>
-        </ul>
+        <a href="../index.html">Home</a>
+        <a href="../projects/index.html">Projects</a>
+        <a href="index.html" class="current">Contact</a>
+        <a href="https://github.com/Jimxthy" target="_blank">Github</a>
+        <a href="../resume/index.html">Resume</a>
     </nav>
+    <h1>Contact</h1>
     <form action="mailto:jih103@ucsd.edu" method="POST" enctype="text/plain">
         <label>
             Email:
@@ -29,7 +28,7 @@
             Message:
             <textarea name="body"></textarea> 
         </label>
-        <button></button>
+        <button>Send</button>
     </form>
 </body>
 </html>

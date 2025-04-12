@@ -11,9 +11,6 @@ body {
     margin-inline: max(1em, (100% - 100ch)  / 2);
 }
 
-ul, li {
-    display:contents;
-}
 
 nav {
     display:flex;
@@ -42,52 +39,17 @@ nav a:hover {
     padding-bottom: 0.1em;
 }
 
-input,
-textarea,
-button,
-select {
-  font: inherit;
-}
-
-form {
-    display:grid;
-    grid-template-columns: auto 1fr;
-    gap:1em;
-}
-
-label {
-    display:grid;
-    grid-template-columns: subgrid;
-    grid-column:1/-1;
-}
-
-button {
-    grid-column:1/-1;
-}
-
-
-.projects {
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr)); 
-}
-
-article {
-    grid-template-rows:subgrid;
-    grid-row:span 3;
-    gap:1em;
-}
-
 h2 {
     margin:0;
+    font-size: 2rem;
 }
 
 h1 {
     font-size: 4rem;
 }
-  
+
 h1, h2, h3, h4, h5, h6 {
     line-height: 1.1;
     text-wrap: balance;
     margin-block: 0.5em;
 }
-  
