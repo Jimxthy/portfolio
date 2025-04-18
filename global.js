@@ -28,7 +28,11 @@ let nav = document.createElement('nav');
 document.body.prepend(nav);
 
 for (let p of pages) {
+  // Check if the URL is an external link or not
   let url = p.url.startsWith('http') ? p.url : BASE_PATH + p.url;
+
   let title = p.title;
+  
+  // Insert the anchor tag into the nav
   nav.insertAdjacentHTML('beforeend', `<a href="${url}">${title}</a>`);
 }
