@@ -28,11 +28,19 @@ let nav = document.createElement('nav');
 document.body.prepend(nav);
 
 for (let p of pages) {
-  // Check if the URL is an external link or not
-  let url = p.url.startsWith('http') ? p.url : BASE_PATH + p.url;
+  let url = p.url;
 
+  // Apply the BASE_PATH logic only for relative URLs
+  if (!url.startsWith('http')) {
+    url = BASE_PATH + url;  // Prepend BASE_PATH to relative URLs
+  }
+
+  // Log the final URL to the console for debugging
+  console.log('Final URL:', url);
+  
   let title = p.title;
   
-  // Insert the anchor tag into the nav
+  // Insert the anchor link into the nav
   nav.insertAdjacentHTML('beforeend', `<a href="${url}">${title}</a>`);
 }
+
