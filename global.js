@@ -69,4 +69,10 @@ document.body.insertAdjacentHTML(
     `
   );
   
+  const select = document.querySelector('#color-scheme-select');
+
+  select.addEventListener('input', function (event) {
+    const scheme = event.target.value;
+    document.documentElement.style.setProperty('color-scheme', scheme);
+  });
 
