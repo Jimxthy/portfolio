@@ -10,6 +10,7 @@ body {
     font: 100%/1.5 system-ui;
     max-width: 1000px;
     margin-inline: max(1em, (100% - 100ch)  / 2);
+    position: relative;
 }
 
 ul, li {
@@ -91,4 +92,20 @@ h1, h2, h3, h4, h5, h6 {
     text-wrap: balance;
     margin-block: 0.5em;
 }
+
+.color-scheme {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;  /* Ensure it stays on top */
+    font-size: 80%;  /* Make the font smaller */
+  }
+  
+  /* Make the font-family inherit from the parent */
+  .color-scheme select {
+    font-family: inherit;  /* Inherit font from the parent */
+    font-size: inherit;    /* Inherit font size */
+    background: none;      /* Optional: remove background for a cleaner look */
+  }
+  
   
