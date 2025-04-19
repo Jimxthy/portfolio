@@ -30,12 +30,11 @@ document.body.prepend(nav);
 for (let p of pages) {
   let url = p.url;
 
-  // Apply the BASE_PATH logic only for relative URLs
+  
   if (!url.startsWith('http')) {
-    url = BASE_PATH + url;  // Prepend BASE_PATH to relative URLs
+    url = BASE_PATH + url;  
   }
 
-  // Log the final URL to the console for debugging
   console.log('Final URL:', url);
   
   let title = p.title;
@@ -71,8 +70,24 @@ document.body.insertAdjacentHTML(
   
   const select = document.querySelector('#color-scheme-select');
 
-  select.addEventListener('input', function (event) {
-    const scheme = event.target.value;
-    document.documentElement.style.setProperty('color-scheme', scheme);
-  });
+
+const savedColorScheme = localStorage.colorScheme;
+
+
+if (savedColorScheme) {
+  document.documentElement.style.setProperty('color-scheme', savedColorScheme);
+  select.value = savedColorScheme;  
+} else {
+ 
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.style.setProperty('color-scheme', prefersDark ? 'dark' : 'light');
+  select.value = prefersDark ? 'dark' : 'light';  
+}
+
+select.addEventListener('input', function (event) {
+  const scheme = event.target.value;
+  document.documentElement.style.setProperty('color-scheme', scheme);
+
+  localStorage.colorScheme = scheme;
+});
 
