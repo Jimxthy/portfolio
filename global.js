@@ -40,7 +40,18 @@ for (let p of pages) {
   
   let title = p.title;
   
-  // Insert the anchor link into the nav
-  nav.insertAdjacentHTML('beforeend', `<a href="${url}">${title}</a>`);
+  let a = document.createElement('a');
+  a.href = url;
+  a.textContent = title;
+  
+
+  if (a.host === location.host && a.pathname === location.pathname) {
+    a.classList.add('current');
+  }
+  if (a.host !== location.host) {
+    a.target = "_blank";
+  }
+
+  nav.append(a)
 }
 
