@@ -98,5 +98,20 @@ h1, h2, h3, h4, h5, h6 {
     right: 1rem;
     font-size: 80%;  /* Make the font smaller */
   }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+    gap: 1rem; /* Optional spacing */
+  }
+  
+  dt {
+    grid-row: 1; /* All <dt> elements go in the first row */
+  }
+  
+  dd {
+    grid-row: 2; /* All <dd> elements go in the second row */
+  }
+  
   
   

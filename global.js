@@ -68,7 +68,7 @@ document.body.insertAdjacentHTML(
     `
   );
   
-  const select = document.querySelector('#color-scheme-select');
+const select = document.querySelector('#color-scheme-select');
 
 
 const savedColorScheme = localStorage.colorScheme;
@@ -91,3 +91,46 @@ select.addEventListener('input', function (event) {
   localStorage.colorScheme = scheme;
 });
 
+export async function fetchJSON(url) {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+    throw error;
+  }
+}
+
+
+export function renderProjects(projects, containerElement) {
+  console.log("Rendering projects..."); 
+  containerElement.innerHTML = ''; 
+
+  const titleElement = document.querySelector('.projects-title');
+  console.log("Found title element:", titleElement); 
+
+  titleElement.textContent = `${projects.length} Projects`;
+
+  projects.forEach(project => {
+    const article = document.createElement('article');
+    article.innerHTML = `
+      <h3>${project.title}</h3>
+      <img src="${project.image}" alt="${project.title}">
+      <p>${project.description}</p>
+    `;
+    containerElement.appendChild(article);
+  });
+}
+
+export async function fetchGitHubData(username) {
+  // return statement here
+  return fetchJSON(`https://api.github.com/users/${username}`);
+
+}
