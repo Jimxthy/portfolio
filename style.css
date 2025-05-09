@@ -99,25 +99,25 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 80%;  /* Make the font smaller */
   }
 
-  dl {
+  dl.git-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Four equal columns */
     gap: 1rem; /* Optional spacing */
   }
   
-  dt {
+  dt.git-stats {
     grid-row: 1; /* All <dt> elements go in the first row */
   }
   
-  dd {
+  dd.git-stats {
     grid-row: 2; /* All <dd> elements go in the second row */
   }
 
     
 
   svg {
-    width: 300px;
-    height: 300px;
+    width: 150;
+    height: 150;
     flex-shrink: 0;
   }
   
@@ -177,5 +177,83 @@ h1, h2, h3, h4, h5, h6 {
       fill: var(--color);
     }
   }
+
+.gridlines line {
+  stroke-opacity: 0.1;
+}
+
+dl.info {
+  display:grid;
+  grid-template-columns: auto 1fr;
+  grid-auto-flow: row;
+  gap: 0.25em 1em;
+  margin: 0;
+  padding: 0;
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+}
+
+dl.info dt,
+dl.info dd {
+  margin: 0;
+}
+
+/* Style labels */
+dl.info dt {
+  color: #666;
+  font-weight: normal;
+}
+
+/* Style values */
+dl.info dd {
+  color: #000;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
+
+
+dl.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5em;
+  padding: 0.75em 1em;
+  backdrop-filter: blur(4px);
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+}
+
+dl.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+  gap: 1rem; /* Optional spacing */
+}
+
+dt.stats {
+  grid-row: 1; /* All <dt> elements go in the first row */
+}
+
+dd.stats {
+  grid-row: 2; /* All <dd> elements go in the second row */
+}
+
+
+
 
   
