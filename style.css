@@ -253,6 +253,11 @@ dd.stats {
   grid-row: 2; /* All <dd> elements go in the second row */
 }
 
+circle.selected {
+  fill: #ff6b6b;
+}
+
+
 
 
 
