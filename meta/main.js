@@ -15,6 +15,19 @@ async function loadData() {
 
   let data = await loadData();
   let commits = processCommits(data);
+  const chartEndDate = new Date('2025-06-09T23:59:59');
+
+  function getCommitDateExtent(commitsList) {
+    const [minDate, maxDate] = d3.extent(commitsList, (d) => d.datetime);
+    const earliestDate = minDate ?? chartEndDate;
+    const latestDate = new Date(
+      Math.min(
+        (maxDate ?? earliestDate).getTime(),
+        chartEndDate.getTime(),
+      ),
+    );
+    return [earliestDate, latestDate];
+  }
   
   function processCommits(data) {
     return d3
@@ -128,6 +141,7 @@ async function loadData() {
     const width = 1000;
     const height = 600;
     const margin = { top: 10, right: 10, bottom: 30, left: 20 };
+    const [minDate, maxDate] = getCommitDateExtent(commits);
 
     const svg = d3
         .select('#scatter-plot')
@@ -139,7 +153,7 @@ async function loadData() {
 
     xScale = d3
         .scaleTime()
-        .domain(d3.extent(commits, (d) => d.datetime))
+        .domain([minDate, maxDate])
         .range([0, width])
         .nice();
       
@@ -305,10 +319,7 @@ async function loadData() {
   let commitProgress = 100;
   let timeScale = d3
     .scaleTime()
-    .domain([
-      d3.min(commits, (d) => d.datetime),
-      d3.max(commits, (d) => d.datetime),
-    ])
+    .domain(getCommitDateExtent(commits))
     .range([0, 100]);
   let commitMaxTime = timeScale.invert(commitProgress);
   
@@ -376,6 +387,11 @@ async function loadData() {
   
   document.querySelector('#commit-progress').addEventListener('input', onTimeSliderChange);
   onTimeSliderChange();
+  if (filteredCommits.length > 0) {
+    const firstCommit = filteredCommits[0];
+    updateScatterPlot(data, filteredCommits);
+    renderTooltipContent(firstCommit);
+  }
 
   function updateScatterPlot(data, commits) {
     const width = 1000;
@@ -391,11 +407,14 @@ async function loadData() {
     };
   
     const svg = d3.select('#scatter-plot').select('svg');
+    const [minDate, maxDate] = getCommitDateExtent(commits);
   
-    xScale.domain(d3.extent(commits, (d) => d.datetime));
+    xScale.domain([minDate, maxDate]);
     xAxis.scale(xScale); // Rebind axis to new scale
-  
-    svg.select('.x-axis').call(xAxis);
+
+    const xAxisGroup = svg.select('.x-axis');
+    xAxisGroup.selectAll('*').remove();
+    xAxisGroup.call(xAxis);
   
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
     const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
@@ -405,7 +424,7 @@ async function loadData() {
     const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
     dots
       .selectAll('circle')
-      .data(sortedCommits, d => d.id) 
+      .data(sortedCommits, (d) => d.id)
       .join('circle')
       .attr('cx', (d) => xScale(d.datetime))
       .attr('cy', (d) => yScale(d.hourFrac))
@@ -453,12 +472,11 @@ async function loadData() {
     const commit = response.element.__data__;
 
     commitMaxTime = commit.datetime;
-
     commitProgress = timeScale(commitMaxTime);
     document.querySelector('#commit-progress').value = commitProgress;
 
     filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
-    filteredCommits.sort((a, b) => a.datetime - b.datetime); 
+    filteredCommits.sort((a, b) => a.datetime - b.datetime);
 
     const lines = filteredCommits.flatMap((d) => d.lines);
     const files = d3.groups(lines, (d) => d.file)
@@ -480,33 +498,33 @@ async function loadData() {
     const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
     filesContainer
-    .select('dt > code')
-    .text((d) => `${d.name} (${d.lines.length} lines)`);
+      .select('dt > code')
+      .text((d) => `${d.name} (${d.lines.length} lines)`);
 
     filesContainer
-    .select('dd')
-    .selectAll('div')
-    .data((d) => d.lines)
-    .join('div')
-    .attr('class', 'loc')
-    .attr('style', (d) => `--color: ${colors(d.type)}`);
+      .select('dd')
+      .selectAll('div')
+      .data((d) => d.lines)
+      .join('div')
+      .attr('class', 'loc')
+      .attr('style', (d) => `--color: ${colors(d.type)}`);
 
     const timeDisplay = document.querySelector('#commit-time');
     timeDisplay.textContent = commitMaxTime.toLocaleString(undefined, {
-      dateStyle: "long",
-      timeStyle: "short"
+      dateStyle: 'long',
+      timeStyle: 'short',
     });
 
-
-    
     updateScatterPlot(data, filteredCommits);
   }
-  
+
   const scroller = scrollama();
   scroller
     .setup({
       container: '#scrolly-1',
-      step: '#scrolly-1 .step',
+      step: '#scatter-story .step',
+      offset: 0.5,
+      threshold: 4,
     })
     .onStepEnter(onStepEnter);
   
